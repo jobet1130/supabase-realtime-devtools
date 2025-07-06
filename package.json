@@ -1,0 +1,44 @@
+{
+  "name": "supabase-realtime-devtools",
+  "version": "1.0.0",
+  "description": "A comprehensive realtime debugging tool for Supabase with self-broadcasting and channel monitoring capabilities",
+  "main": "src/components/ui/supabase-devtools.tsx",
+  "type": "module",
+  "keywords": [
+    "supabase",
+    "realtime",
+    "devtools",
+    "debugging",
+    "react",
+    "typescript",
+    "shadcn",
+    "ui"
+  ],
+  "author": "Criztian Tuplano",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Criztiandev/supabase-realtime-devtools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Criztiandev/supabase-realtime-devtools/issues"
+  },
+  "homepage": "https://github.com/Criztiandev/supabase-realtime-devtools#readme",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "src/",
+    "registry/",
+    "README.md",
+    "LICENSE"
+  ]
+}

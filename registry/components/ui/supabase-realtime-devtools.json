@@ -1,0 +1,22 @@
+{
+  "name": "supabase-devtools",
+  "type": "components:ui",
+  "description": "A comprehensive realtime debugging tool for Supabase with self-broadcasting and channel monitoring capabilities.",
+  "dependencies": ["lucide-react", "@supabase/supabase-js"],
+  "registryDependencies": [
+    "input",
+    "button",
+    "badge",
+    "card",
+    "scroll-area",
+    "switch"
+  ],
+  "files": ["components/ui/supabase-realtime-devtools.tsx"],
+  "tailwind": {
+    "config": {
+      "theme": {
+        "extend": {}
+      }
+    }
+  }
+}
