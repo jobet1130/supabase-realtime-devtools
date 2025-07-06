@@ -25,14 +25,21 @@
   },
   "homepage": "https://github.com/Criztiandev/supabase-realtime-devtools#readme",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
     "@supabase/supabase-js": "^2.0.0",
-    "lucide-react": "^0.263.1"
+    "lucide-react": "^0.263.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "scripts": {
+    "build:registry": "node scripts/build-registry.js",
+    "build:registry:watch": "node scripts/build-registry.js && echo '👀 Watching for changes...' && chokidar 'components/ui/supabase-realtime-devtools.tsx' -c 'npm run build:registry'",
+    "prebuild": "npm run build:registry",
+    "precommit": "npm run build:registry"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "chokidar-cli": "^3.0.0",
     "typescript": "^5.0.0"
   },
   "files": [

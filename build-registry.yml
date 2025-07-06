@@ -1,0 +1,66 @@
+name: Build Registry
+
+on:
+  push:
+    paths:
+      - "components/ui/supabase-realtime-devtools.tsx"
+      - "scripts/build-registry.js"
+    branches: [main]
+  pull_request:
+    paths:
+      - "components/ui/supabase-realtime-devtools.tsx"
+      - "scripts/build-registry.js"
+    branches: [main]
+
+jobs:
+  build-registry:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Build registry
+        run: |
+          node scripts/build-registry.js
+
+      - name: Check if registry changed
+        id: registry-changed
+        run: |
+          if [ -n "$(git status --porcelain install.json)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit registry changes
+        if: steps.registry-changed.outputs.changed == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add install.json
+          git commit -m "🤖 Auto-update registry from component changes"
+          git push
+
+      - name: Validate registry format
+        run: |
+          echo "🔍 Validating install.json format..."
+          node -e "
+            const fs = require('fs');
+            const registry = JSON.parse(fs.readFileSync('install.json', 'utf8'));
+            
+            // Basic validation
+            if (!registry.name) throw new Error('Missing name field');
+            if (!registry.type) throw new Error('Missing type field');
+            if (!registry.files || !Array.isArray(registry.files)) throw new Error('Missing or invalid files array');
+            if (registry.files.length === 0) throw new Error('No files specified');
+            if (!registry.files[0].content) throw new Error('Missing component content');
+            
+            console.log('✅ Registry format is valid');
+            console.log('📊 Component size:', (registry.files[0].content.length / 1024).toFixed(2), 'KB');
+          "

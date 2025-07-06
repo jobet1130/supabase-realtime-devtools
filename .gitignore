@@ -1,0 +1,6 @@
+# Registry build outputs
+install.json
+node_modules
+
+# Or if you want to commit the built file, ignore the script temp files instead:
+# .registry-temp/
