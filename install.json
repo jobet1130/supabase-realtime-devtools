@@ -11,7 +11,12 @@
     "scroll-area",
     "switch"
   ],
-  "files": ["components/ui/supabase-realtime-devtools.tsx"],
+  "files": [
+    {
+      "name": "supabase-realtime-devtools.tsx",
+      "content": ""
+    }
+  ],
   "tailwind": {
     "config": {
       "theme": {
