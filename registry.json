@@ -4,6 +4,34 @@
   "homepage": "https://acme.com",
   "items": [
     {
+      "name": "supabase-realtime-dev-tools",
+      "type": "registry:component",
+      "title": "Supabase Realtime Dev Tools",
+      "description": "A component for displaying Supabase Realtime dev tools",
+      "dependencies": [
+        "react",
+        "lucide-react",
+        "@supabase/supabase-js",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-switch",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "badge",
+        "card",
+        "scroll-area",
+        "switch"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/supabase-realtime-dev-tools/supabase-realtime-dev-tools.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "hello-world",
       "type": "registry:component",
       "title": "Hello World",
