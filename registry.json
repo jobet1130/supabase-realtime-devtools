@@ -22,7 +22,9 @@
         "badge",
         "card",
         "scroll-area",
-        "switch"
+        "switch",
+        "tooltip",
+        "tabs"
       ],
       "files": [
         {
