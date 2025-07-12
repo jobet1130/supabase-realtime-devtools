@@ -1,54 +1,74 @@
 # Supabase Realtime Dev Tools
 
-A comprehensive realtime debugging and monitoring tool for Supabase applications. Monitor channels, broadcast messages, track database changes, and debug realtime subscriptions with an intuitive developer interface.
+A comprehensive realtime debugging and monitoring tool for Supabase applications. Monitor channels, broadcast messages, track database changes, analyze connection statistics, and debug realtime subscriptions with an intuitive three-tab developer interface.
 
-![Supabase Realtime Dev Tools](https://img.shields.io/badge/version-2.1-blue.svg)
+![Supabase Realtime Dev Tools](https://img.shields.io/badge/version-1.0-blue.svg)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)
 
 ## ✨ Features
 
-### 🔄 **Dual Mode Operation**
+### 🖥️ **Three-Tab Interface**
 
-- **Listener Mode**: Monitor channels for incoming broadcasts and database changes
-- **Self-Hosted Mode**: Send test broadcasts and monitor your own messages
-- **Real-time Switching**: Toggle between modes without reconnecting
+- **Monitor Tab**: Real-time channel monitoring with live logs
+- **Stats Tab**: Comprehensive connection statistics and message analytics
+- **Settings Tab**: Full configuration control with persistent settings
 
-### 📡 **Channel Monitoring**
+### 📡 **Advanced Channel Monitoring**
 
-- Subscribe to any Supabase realtime channel
-- Monitor broadcast events and postgres_changes
-- Real-time connection status indicators
-- Automatic reconnection handling
+- **Multi-Event Support**: Monitor broadcast, database changes, and presence events
+- **Real-time Connection Status**: Visual indicators with animated status badges
+- **Channel Subscription Management**: Start/stop monitoring with instant feedback
+- **Auto-Reconnection**: Handles connection drops gracefully
+- **Authentication Awareness**: Monitors Supabase auth state in real-time
 
-### 🎯 **Advanced Logging**
+### 🎯 **Enhanced Logging System**
 
-- **Categorized Logs**: Success, Error, Warning, and Info messages
-- **Source Tracking**: Distinguish between self-broadcasts, external messages, and system events
-- **Expandable Details**: Click to view full payload and metadata
-- **Persistent History**: Configurable log retention (default: 100 entries)
+- **Categorized Logs**: Success, Error, Warning, and Info messages with color-coded icons
+- **Source Tracking**: Distinguish between broadcast, database, presence, system, and self-generated events
+- **Expandable Details**: Click to view full JSON payloads with syntax highlighting
+- **Smart Filtering**: Toggle system logs visibility, auto-scroll controls
+- **Persistent History**: Configurable log retention (10-1000 entries)
+- **Live Timestamps**: Millisecond-precision timestamps for debugging
 
-### 🔐 **Authentication Awareness**
+### 📊 **Comprehensive Statistics**
 
-- Automatic Supabase authentication detection
-- Real-time auth status monitoring
-- Error handling for authentication failures
-- Visual indicators for connection state
+- **Connection Metrics**: Real-time connection status, uptime tracking, last activity
+- **Message Analytics**: Total messages, per-type counters, message distribution graphs
+- **Performance Tracking**: Activity monitoring with visual progress indicators
+- **Channel Information**: Current channel details with tooltip support
+- **Log Statistics**: Total vs filtered log counts, retention settings
 
-### ⚙️ **Highly Configurable**
+### 🛠️ **Advanced Configuration**
 
-- **Positioning**: 4 corner positions (bottom-right, bottom-left, top-right, top-left)
-- **Keyboard Shortcuts**: Customizable hotkeys (default: Ctrl+Shift+S)
-- **Persistent Settings**: Local storage for configuration
-- **Theme Integration**: Built with shadcn/ui for consistent styling
+- **Event Listeners**: Granular control over broadcast, database, and presence events
+- **Self-Test Broadcasting**: Send test messages to verify channel functionality
+- **Display Options**: System log visibility, auto-scroll behavior, log limits
+- **Persistent Settings**: Local storage for all configuration with reset functionality
+- **Keyboard Shortcuts**: Customizable hotkeys with user-defined combinations
 
-### 🎨 **Beautiful UI**
+### 🎨 **Professional UI/UX**
 
-- **Responsive Design**: Optimized for development workflows
-- **Visual Indicators**: Color-coded status and message types
-- **Smooth Animations**: Polished interactions and transitions
-- **Accessibility**: Keyboard navigation and screen reader support
+- **Responsive Design**: Optimized for development workflows with full-screen interface
+- **Visual Indicators**: Color-coded status badges, animated connection states
+- **Smooth Interactions**: Polished animations, hover effects, and transitions
+- **Accessibility**: Keyboard navigation, screen reader support, tooltip guidance
+- **Performance Optimized**: Memoized components, reducer-based state management
+
+### 🔐 **Authentication Integration**
+
+- **Real-time Auth Status**: Monitors Supabase session state continuously
+- **Visual Auth Indicators**: Clear status badges for connection state
+- **Error Handling**: Graceful degradation with informative error messages
+- **Session Management**: Automatic session detection and validation
+
+### ⚡ **Performance & Reliability**
+
+- **Optimized Rendering**: Memoized components prevent unnecessary re-renders
+- **State Management**: Reducer-based architecture for predictable state updates
+- **Memory Management**: Automatic log cleanup and efficient data structures
+- **Error Boundaries**: Graceful error handling with detailed error reporting
 
 ## 📦 Installation
 
@@ -135,7 +155,7 @@ Terminal 1 (Keep Running)          Terminal 2 (Your Commands)
 1. **Install Dependencies**:
 
 ```bash
-npm install @supabase/supabase-js lucide-react @radix-ui/react-scroll-area @radix-ui/react-switch class-variance-authority
+npm install @supabase/supabase-js lucide-react @radix-ui/react-scroll-area @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-tooltip class-variance-authority
 ```
 
 2. **Copy the Component**:
@@ -152,7 +172,7 @@ curl -o src/components/ui/supabase-realtime-dev-tools.tsx \
 3. **Install Required UI Components**:
 
 ```bash
-npx shadcn@latest add button input badge card scroll-area switch
+npx shadcn@latest add button input badge card scroll-area switch tabs tooltip textarea label
 ```
 
 ## 🚀 Usage
@@ -188,59 +208,208 @@ export default function App() {
     <div>
       {/* Your app content */}
       <SupabaseDevTools
-        supabaseClient={supabase}
+        client={supabase}
         position="top-left"
         defaultChannel="my-project-channel"
         maxLogs={200}
         keyboardShortcut="Ctrl+Alt+D"
         enableKeyboardShortcut={true}
+        autoShow={false}
       />
     </div>
   );
 }
 ```
 
+### Global Client Detection
+
+The component automatically detects Supabase clients:
+
+```tsx
+// Option 1: Pass client explicitly
+<SupabaseDevTools client={supabase} />
+
+// Option 2: Global detection (window.supabase or window.__supabase)
+<SupabaseDevTools />
+```
+
 ## ⚙️ Props
 
-| Prop                     | Type                                                           | Default             | Description                   |
-| ------------------------ | -------------------------------------------------------------- | ------------------- | ----------------------------- |
-| `supabaseClient`         | `SupabaseClient`                                               | `undefined`         | Your Supabase client instance |
-| `position`               | `"bottom-right" \| "bottom-left" \| "top-right" \| "top-left"` | `"bottom-right"`    | DevTools panel position       |
-| `defaultChannel`         | `string`                                                       | `"project-updates"` | Initial channel name          |
-| `maxLogs`                | `number`                                                       | `100`               | Maximum number of log entries |
-| `enableKeyboardShortcut` | `boolean`                                                      | `true`              | Enable keyboard shortcut      |
-| `keyboardShortcut`       | `string`                                                       | `"Ctrl+Shift+S"`    | Keyboard shortcut to toggle   |
+| Prop                     | Type                                                           | Default              | Description                           |
+| ------------------------ | -------------------------------------------------------------- | -------------------- | ------------------------------------- |
+| `client`                 | `SupabaseClient`                                               | `undefined`          | Your Supabase client instance         |
+| `position`               | `"bottom-right" \| "bottom-left" \| "top-right" \| "top-left"` | `"bottom-right"`     | DevTools panel position               |
+| `defaultChannel`         | `string`                                                       | `"devtools-monitor"` | Initial channel name                  |
+| `maxLogs`                | `number`                                                       | `200`                | Maximum number of log entries         |
+| `enableKeyboardShortcut` | `boolean`                                                      | `true`               | Enable keyboard shortcut              |
+| `keyboardShortcut`       | `string`                                                       | `"Ctrl+Shift+D"`     | Keyboard shortcut to toggle           |
+| `autoShow`               | `boolean`                                                      | `false`              | Auto-show DevTools on component mount |
 
 ## 🔧 How It Works
 
-### Listener Mode (Default)
+### Monitor Tab
 
-- Monitors the channel for all incoming messages
-- Displays broadcasts from other clients/tabs
-- Shows database changes (INSERT, UPDATE, DELETE)
-- Perfect for monitoring external activity
+The Monitor tab is your command center for real-time debugging:
 
-### Self-Hosted Mode
+#### **Channel Control**
 
-- Sends test broadcasts to the monitored channel
-- Displays only messages sent by this instance
-- Ideal for testing your broadcasting setup
-- Includes "Send Broadcast" button for manual testing
+- **Start/Stop Monitoring**: Connect to any Supabase channel with real-time status
+- **Channel Input**: Type any channel name to monitor
+- **Connection Status**: Visual indicators show connection state with animated badges
+- **Test Broadcasting**: Send test messages to verify channel functionality
 
-### Visual Indicators
+#### **Live Logging**
 
-| Badge           | Description                         |
-| --------------- | ----------------------------------- |
-| 🔵 **Self**     | Messages you sent (self-broadcasts) |
-| 🟢 **External** | Messages from other clients         |
-| ⚫ **System**   | DevTools internal messages          |
+- **Real-time Events**: See all channel activity as it happens
+- **Event Categorization**: Broadcast, Database, Presence, System, and Self events
+- **Expandable Details**: Click any log entry to see full JSON payload
+- **Smart Filtering**: Toggle system logs, auto-scroll controls
 
-| Icon | Type    | Description           |
-| ---- | ------- | --------------------- |
-| ✅   | Success | Successful operations |
-| ❌   | Error   | Failed operations     |
-| ⚠️   | Warning | Important notices     |
-| ℹ️   | Info    | General information   |
+#### **Visual Indicators**
+
+| Badge Color | Source    | Description                               |
+| ----------- | --------- | ----------------------------------------- |
+| 🟢 Green    | Broadcast | Broadcast events from other clients       |
+| 🟣 Purple   | Database  | Database changes (INSERT, UPDATE, DELETE) |
+| 🔵 Blue     | Presence  | Presence events (joins, leaves, updates)  |
+| 🔵 Blue     | Self      | Messages you sent (test broadcasts)       |
+| ⚫ Gray     | System    | DevTools internal messages                |
+
+| Status Badge    | Description                  |
+| --------------- | ---------------------------- |
+| 🟢 Connected    | Connected and authenticated  |
+| 🔴 Disconnected | Not connected or auth failed |
+| 🟢 Monitoring   | Actively monitoring channel  |
+| 🔴 Auth Error   | Authentication issue         |
+
+### Stats Tab
+
+Comprehensive analytics for your realtime connections:
+
+#### **Connection Statistics**
+
+- **Real-time Status**: Current connection state and monitoring status
+- **Channel Information**: Active channel name with tooltip details
+- **Activity Tracking**: Last activity timestamp and uptime metrics
+
+#### **Message Analytics**
+
+- **Total Messages**: Complete count of all received messages
+- **Per-Type Counters**: Separate counts for broadcast, database, presence, system events
+- **Message Distribution**: Visual progress bars showing message type ratios
+- **Log Statistics**: Total vs filtered log counts with retention settings
+
+#### **Performance Metrics**
+
+- **Connection Health**: Monitor connection stability and performance
+- **Activity Monitoring**: Track message frequency and patterns
+- **Memory Usage**: Log count management and cleanup statistics
+
+### Settings Tab
+
+Full configuration control with persistent settings:
+
+#### **Event Listeners**
+
+- **Broadcast Events**: Toggle broadcast message monitoring
+- **Database Changes**: Enable/disable postgres_changes listener
+- **Presence Events**: Control presence event monitoring
+- **Self-Test Broadcasting**: Allow sending test messages
+
+#### **Display Options**
+
+- **System Logs**: Show/hide DevTools internal messages
+- **Auto-Scroll**: Automatically scroll to new log entries
+- **Max Logs**: Set log retention limit (10-1000 entries)
+
+#### **DevTools Information**
+
+- **Version Display**: Current DevTools version
+- **Keyboard Shortcut**: Shows configured hotkey
+- **Supabase Status**: Client connection status with debug info
+- **Reset Settings**: Restore all settings to defaults
+
+### Authentication Flow
+
+The DevTools automatically handles authentication:
+
+1. **Session Detection**: Automatically detects active Supabase sessions
+2. **Real-time Monitoring**: Continuously monitors auth state changes
+3. **Visual Feedback**: Clear status indicators for auth state
+4. **Error Handling**: Graceful degradation with informative error messages
+5. **Reconnection**: Automatic reconnection when auth is restored
+
+### Performance Optimizations
+
+- **Memoized Components**: Prevent unnecessary re-renders
+- **Reducer Architecture**: Predictable state management
+- **Debounced Updates**: Smooth scrolling and UI updates
+- **Memory Management**: Automatic log cleanup and efficient data structures
+
+## 🎯 Event Types
+
+### Broadcast Events
+
+Monitor custom broadcast messages:
+
+```tsx
+// In your app - sending broadcasts
+const channel = supabase.channel("my-channel");
+channel.send({
+  type: "broadcast",
+  event: "custom-event",
+  payload: { message: "Hello World" },
+});
+
+// DevTools will show:
+// 📻 Broadcast: custom-event
+// Click to expand full payload
+```
+
+### Database Changes
+
+Monitor postgres_changes events:
+
+```tsx
+// In your app - database subscription
+const channel = supabase.channel("db-changes").on(
+  "postgres_changes",
+  {
+    event: "*",
+    schema: "public",
+    table: "posts",
+  },
+  (payload) => {
+    console.log("Change received!", payload);
+  }
+);
+
+// DevTools will show:
+// 🗄️ DB INSERT: posts
+// 🗄️ DB UPDATE: posts
+// 🗄️ DB DELETE: posts
+```
+
+### Presence Events
+
+Monitor user presence:
+
+```tsx
+// In your app - presence tracking
+const channel = supabase
+  .channel("online-users")
+  .on("presence", { event: "sync" }, () => {
+    console.log("Presence synced");
+  })
+  .on("presence", { event: "join" }, ({ key, newPresences }) => {
+    console.log("User joined", newPresences);
+  });
+
+// DevTools will show:
+// 👥 Presence: sync
+// 👥 Presence: join
+// 👥 Presence: leave
+```
 
 ## 🛠️ Local Development
 
@@ -288,7 +457,8 @@ supabase-realtime-dev-tools/
 │   ├── page.tsx                 # Demo page
 │   └── layout.tsx               # Root layout
 ├── components/                   # Reusable components
-│   └── ui/                      # shadcn/ui components
+│   ├── ui/                      # shadcn/ui components
+│   └── providers.tsx            # Context providers
 ├── registry/                     # Component registry
 │   └── new-york/
 │       └── supabase-realtime-dev-tools/
@@ -299,6 +469,14 @@ supabase-realtime-dev-tools/
 ├── lib/                         # Utility functions
 └── package.json
 ```
+
+### Development Features
+
+- **Hot Reload**: Instant updates during development
+- **TypeScript**: Full type safety and IntelliSense
+- **ESLint**: Code quality and consistency
+- **Tailwind CSS**: Utility-first styling
+- **Component Registry**: Easy distribution system
 
 ## 🤝 Contributing
 
@@ -318,34 +496,42 @@ git checkout -b feature/amazing-feature
    - Follow the existing code style
    - Add TypeScript types for new features
    - Update tests if applicable
+   - Test across different browsers
 
 4. **Test Your Changes**:
 
 ```bash
 npm run dev
-# Test the component in the browser
+# Test the component thoroughly
+# Try different Supabase configurations
+# Test keyboard shortcuts and UI interactions
 ```
 
 5. **Submit a Pull Request**:
-   - Describe your changes
-   - Include screenshots if UI changes
+   - Describe your changes clearly
+   - Include screenshots/videos for UI changes
    - Reference any related issues
+   - Add tests for new functionality
 
 ### Code Style Guidelines
 
-- **TypeScript**: Use strict typing
-- **React**: Functional components with hooks
-- **Styling**: Tailwind CSS classes
-- **Components**: shadcn/ui patterns
-- **Naming**: Descriptive variable and function names
+- **TypeScript**: Use strict typing with readonly interfaces
+- **React**: Functional components with hooks, memoization for performance
+- **Styling**: Tailwind CSS classes, consistent spacing and colors
+- **Components**: shadcn/ui patterns, accessible design
+- **State Management**: Reducer pattern for complex state
+- **Performance**: Memoized components, debounced actions
 
 ### Areas for Contribution
 
-- 🐛 **Bug Fixes**: Report and fix issues
-- ✨ **New Features**: Enhance functionality
-- 📚 **Documentation**: Improve guides and examples
-- 🎨 **UI/UX**: Design improvements
-- 🔧 **Developer Experience**: Tooling and workflow improvements
+- 🐛 **Bug Fixes**: Report and fix issues, improve error handling
+- ✨ **New Features**: Export logs, custom themes, advanced filtering
+- 📊 **Analytics**: Enhanced statistics, performance metrics
+- 📚 **Documentation**: Improve guides, add examples, video tutorials
+- 🎨 **UI/UX**: Design improvements, accessibility enhancements
+- 🔧 **Developer Experience**: Better TypeScript support, testing utilities
+- 🌐 **Internationalization**: Multi-language support
+- 🔌 **Integrations**: Support for other realtime services
 
 ## 🎨 Customization
 
@@ -357,13 +543,15 @@ The component uses Tailwind CSS and shadcn/ui. Customize by:
 
 ```css
 :root {
-  --primary: your-color;
-  --secondary: your-color;
+  --primary: your-primary-color;
+  --secondary: your-secondary-color;
+  --muted: your-muted-color;
+  --border: your-border-color;
   /* ... other CSS variables */
 }
 ```
 
-2. **Extending the Component**:
+2. **Custom Positioning**:
 
 ```tsx
 import SupabaseDevTools from "@/components/ui/supabase-realtime-dev-tools";
@@ -371,8 +559,30 @@ import { cn } from "@/lib/utils";
 
 export function CustomDevTools(props) {
   return (
-    <div className={cn("custom-positioning", props.className)}>
+    <div
+      className={cn(
+        "fixed top-0 left-0 w-full h-full z-[9999]",
+        props.className
+      )}
+    >
       <SupabaseDevTools {...props} />
+    </div>
+  );
+}
+```
+
+3. **Theme Integration**:
+
+```tsx
+// Integrate with your theme system
+import { useTheme } from "next-themes";
+
+export function ThemedDevTools() {
+  const { theme } = useTheme();
+
+  return (
+    <div className={cn("supabase-devtools", theme === "dark" && "dark")}>
+      <SupabaseDevTools />
     </div>
   );
 }
@@ -380,40 +590,115 @@ export function CustomDevTools(props) {
 
 ### Functionality
 
-1. **Custom Log Formatting**:
+1. **Custom Log Processing**:
 
 ```tsx
-// Fork the component and modify the addLog function
-const addLog = useCallback((type, message, source, details) => {
-  // Your custom logic here
-  const customLog = {
-    ...defaultLog,
-    customField: "your-data",
-  };
-  setLogs((prev) => [customLog, ...prev]);
+// Fork the component and modify log handling
+const customAddLog = useCallback((type, message, source, details) => {
+  // Add custom processing
+  const processedMessage = customProcessor(message);
+  const enrichedDetails = { ...details, customData: getCustomData() };
+
+  // Original log logic
+  dispatch({
+    type: "ADD_LOG",
+    payload: {
+      type,
+      message: processedMessage,
+      source,
+      details: enrichedDetails,
+    },
+  });
 }, []);
 ```
 
-2. **Additional Event Types**:
+2. **Advanced Event Handling**:
 
 ```tsx
-// Add more Supabase event listeners
-channel
-  .on("presence", { event: "*" }, (payload) => {
-    // Handle presence events
+// Add custom event listeners
+const channel = supabase
+  .channel(channelName)
+  .on("broadcast", { event: "custom-event" }, (payload) => {
+    // Custom handling for specific events
+    addLog("info", `Custom event: ${payload.type}`, "broadcast", payload);
   })
-  .on("your-custom-event", {}, (payload) => {
-    // Handle custom events
-  });
+  .on(
+    "postgres_changes",
+    {
+      event: "*",
+      schema: "public",
+      table: "specific_table",
+    },
+    (payload) => {
+      // Table-specific handling
+      addLog("success", `Table update: ${payload.table}`, "database", payload);
+    }
+  );
+```
+
+3. **Custom Configuration**:
+
+```tsx
+// Extend the configuration interface
+interface CustomConfig extends DevToolsConfig {
+  customSetting: boolean;
+  advancedOptions: Record<string, any>;
+}
+
+// Use with custom settings
+const [customConfig, setCustomConfig] = useState<CustomConfig>({
+  ...DEFAULT_CONFIG,
+  customSetting: true,
+  advancedOptions: { feature: true },
+});
 ```
 
 ## 📋 Requirements
 
+### Runtime Requirements
+
 - **React**: 18.0.0 or higher
 - **TypeScript**: 5.0.0 or higher
 - **Supabase JS**: 2.0.0 or higher
+- **Node.js**: 18.0.0 or higher
+
+### Peer Dependencies
+
+- **@supabase/supabase-js**: ^2.0.0
+- **react**: ^18.0.0
+- **react-dom**: ^18.0.0
+- **lucide-react**: ^0.263.0
+- **class-variance-authority**: ^0.7.0
+
+### Development Dependencies
+
 - **Next.js**: 13.0.0 or higher (for demo)
 - **Tailwind CSS**: 3.0.0 or higher
+- **shadcn/ui**: Latest version
+- **TypeScript**: 5.0.0 or higher
+
+### Browser Support
+
+- **Chrome**: Latest 2 versions
+- **Firefox**: Latest 2 versions
+- **Safari**: Latest 2 versions
+- **Edge**: Latest 2 versions
+
+## 🔒 Security
+
+### Data Handling
+
+- **Local Storage**: Settings are stored locally, no sensitive data transmission
+- **Authentication**: Uses existing Supabase session, no credential storage
+- **Network**: Only connects to configured Supabase instances
+- **Privacy**: No external analytics or tracking
+
+### Best Practices
+
+- **Environment Variables**: Store Supabase credentials securely
+- **Channel Names**: Use descriptive, non-sensitive channel names
+- **Development Only**: Remove from production builds
+- **Access Control**: Ensure proper RLS policies on monitored tables
 
 ## 📝 License
 
@@ -421,20 +706,39 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [shadcn/ui](https://ui.shadcn.com/)
-- Icons by [Lucide React](https://lucide.dev/)
-- Powered by [Supabase](https://supabase.com/)
+- Built with [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible components
+- Icons by [Lucide React](https://lucide.dev/) for clear, professional iconography
+- Powered by [Supabase](https://supabase.com/) for realtime capabilities
+- Inspired by browser DevTools and modern debugging practices
 
 ## 📞 Support
 
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/supabase-realtime-dev-tools/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/supabase-realtime-dev-tools/discussions)
 - 📖 **Documentation**: [Wiki](https://github.com/yourusername/supabase-realtime-dev-tools/wiki)
+- 💬 **Community**: [Discord](https://discord.gg/supabase) - #realtime-devtools channel
+
+### Frequently Asked Questions
+
+**Q: Can I use this in production?**
+A: The DevTools are designed for development. Consider removing or conditionally rendering based on environment.
+
+**Q: Does it work with Supabase Edge Functions?**
+A: Yes! Monitor Edge Function broadcasts and database changes triggered by functions.
+
+**Q: How do I monitor multiple channels?**
+A: Currently supports one channel at a time. You can quickly switch channels in the Monitor tab.
+
+**Q: Can I export the logs?**
+A: Log export is planned for a future release. Currently, you can copy log details manually.
+
+**Q: Does it support custom event types?**
+A: Yes! Any broadcast event type will be displayed with proper categorization.
 
 ---
 
 <div align="center">
   <strong>Built with ❤️ for the Supabase community</strong>
+  <br>
+  <em>Happy debugging! 🐛✨</em>
 </div>
-
-# SUPABASE-REALTIME-DEV-TOOLS
